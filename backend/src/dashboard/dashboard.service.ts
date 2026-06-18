@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class DashboardService {
   constructor(private prisma: PrismaService) {}
 
-  async getStats(tailoringShopId: string) {
+  async getStats(nurseryId: string) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -16,146 +16,146 @@ export class DashboardService {
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
     const [
-      tailoringShop,
-      totalWorkstations,
-      availableWorkstations,
-      inUseWorkstations,
+      nursery,
+      totalBays,
+      availableGreenhouseBays,
+      inUseGreenhouseBays,
       totalJobs,
-      openEquipmentMaintenance,
-      urgentEquipmentMaintenance,
-      pendingQualityChecklist,
-      activeServiceRates,
-      pendingFabricOrders,
-      completedFabricOrders,
+      openEquipmentRepair,
+      urgentEquipmentRepair,
+      pendingIrrigationSchedule,
+      activePlantPricings,
+      pendingPlantOrders,
+      completedPlantOrders,
       revenueTotals,
       recentJobs,
-      recentEquipmentMaintenance,
+      recentEquipmentRepair,
       shopZones,
     ] = await Promise.all([
-      this.prisma.tailoringShop.findUnique({ where: { id: tailoringShopId } }),
-      this.prisma.workstation.count({ where: { tailoringShopId } }),
-      this.prisma.workstation.count({ where: { tailoringShopId, status: 'available' } }),
-      this.prisma.workstation.count({ where: { tailoringShopId, status: 'in_use' } }),
-      this.prisma.alterationJob.count({ where: { tailoringShopId } }),
-      this.prisma.equipmentMaintenance.count({
-        where: { tailoringShopId, status: { in: ['open', 'in_progress'] } },
+      this.prisma.nursery.findUnique({ where: { id: nurseryId } }),
+      this.prisma.greenhouseBay.count({ where: { nurseryId } }),
+      this.prisma.greenhouseBay.count({ where: { nurseryId, status: 'active' } }),
+      this.prisma.greenhouseBay.count({ where: { nurseryId, status: 'growing' } }),
+      this.prisma.harvestBatch.count({ where: { nurseryId } }),
+      this.prisma.equipmentRepair.count({
+        where: { nurseryId, status: { in: ['open', 'in_progress'] } },
       }),
-      this.prisma.equipmentMaintenance.count({
+      this.prisma.equipmentRepair.count({
         where: {
-          tailoringShopId,
+          nurseryId,
           status: { in: ['open', 'in_progress'] },
           priority: { in: ['high', 'urgent'] },
         },
       }),
-      this.prisma.qualityChecklist.count({
+      this.prisma.irrigationSchedule.count({
         where: {
-          tailoringShopId,
+          nurseryId,
           status: { in: ['scheduled', 'overdue'] },
           scheduledAt: { lte: sevenDaysLater },
         },
       }),
-      this.prisma.serviceRate.count({
-        where: { tailoringShopId, status: 'active' },
+      this.prisma.plantPricing.count({
+        where: { nurseryId, status: 'active' },
       }),
-      this.prisma.fabricOrder.count({
-        where: { tailoringShopId, status: { in: ['pending', 'in_progress'] } },
+      this.prisma.plantOrder.count({
+        where: { nurseryId, status: { in: ['pending', 'in_progress'] } },
       }),
-      this.prisma.fabricOrder.count({
-        where: { tailoringShopId, status: { in: ['completed', 'delivered'] } },
+      this.prisma.plantOrder.count({
+        where: { nurseryId, status: { in: ['completed', 'delivered'] } },
       }),
-      this.prisma.alterationJob.aggregate({
-        where: { tailoringShopId, dueAt: { gte: today } },
-        _sum: { cashAmount: true, cardAmount: true, rushFee: true },
+      this.prisma.harvestBatch.aggregate({
+        where: { nurseryId, harvestedAt: { gte: today } },
+        _sum: { cashSales: true, cardSales: true, rushPremium: true },
       }),
-      this.prisma.alterationJob.findMany({
-        where: { tailoringShopId },
+      this.prisma.harvestBatch.findMany({
+        where: { nurseryId },
         include: {
-          workstation: { select: { name: true, zone: true, specialty: true } },
+          greenhouseBay: { select: { name: true, zone: true, climateType: true } },
         },
-        orderBy: { dueAt: 'desc' },
+        orderBy: { harvestedAt: 'desc' },
         take: 5,
       }),
-      this.prisma.equipmentMaintenance.findMany({
-        where: { tailoringShopId, status: { in: ['open', 'in_progress'] } },
+      this.prisma.equipmentRepair.findMany({
+        where: { nurseryId, status: { in: ['open', 'in_progress'] } },
         include: {
-          workstation: { select: { name: true, zone: true } },
+          greenhouseBay: { select: { name: true, zone: true } },
         },
         orderBy: { reportedAt: 'desc' },
         take: 5,
       }),
-      this.prisma.workstation.groupBy({
+      this.prisma.greenhouseBay.groupBy({
         by: ['zone'],
-        where: { tailoringShopId },
+        where: { nurseryId },
         _count: { id: true },
       }),
     ]);
 
-    const totalCapacity = tailoringShop?.totalWorkstations || totalWorkstations || 1;
-    const workstationUtilizationRate =
-      totalWorkstations > 0 ? Math.round((inUseWorkstations / totalWorkstations) * 1000) / 10 : 0;
+    const totalCapacity = nursery?.totalBays || totalBays || 1;
+    const greenhouseBayUtilizationRate =
+      totalBays > 0 ? Math.round((inUseGreenhouseBays / totalBays) * 1000) / 10 : 0;
 
     const dailyRevenue =
-      (revenueTotals._sum.cashAmount || 0) +
-      (revenueTotals._sum.cardAmount || 0) +
-      (revenueTotals._sum.rushFee || 0);
+      (revenueTotals._sum.cashSales || 0) +
+      (revenueTotals._sum.cardSales || 0) +
+      (revenueTotals._sum.rushPremium || 0);
 
-    const dailyRushFees = revenueTotals._sum.rushFee || 0;
+    const dailyRushFees = revenueTotals._sum.rushPremium || 0;
 
-    const monthlyTrend = await this.getMonthlyTrend(tailoringShopId, sixMonthsAgo);
+    const monthlyTrend = await this.getMonthlyTrend(nurseryId, sixMonthsAgo);
 
     return {
-      totalWorkstations,
-      availableWorkstations,
-      inUseWorkstations,
+      totalBays,
+      availableGreenhouseBays,
+      inUseGreenhouseBays,
       totalCapacity,
-      workstationUtilizationRate,
+      greenhouseBayUtilizationRate,
       totalJobs,
-      openEquipmentMaintenance,
-      urgentEquipmentMaintenance,
-      pendingQualityChecklist,
-      activeServiceRates,
-      pendingFabricOrders,
-      completedFabricOrders,
+      openEquipmentRepair,
+      urgentEquipmentRepair,
+      pendingIrrigationSchedule,
+      activePlantPricings,
+      pendingPlantOrders,
+      completedPlantOrders,
       dailyRevenue,
       dailyRushFees,
       recentJobs,
-      recentEquipmentMaintenance,
+      recentEquipmentRepair,
       shopZones: shopZones.map((w) => ({
         zone: w.zone,
-        workstationCount: w._count.id,
+        greenhouseBayCount: w._count.id,
       })),
       monthlyTrend,
     };
   }
 
-  private async getMonthlyTrend(tailoringShopId: string, since: Date) {
-    const sessions = await this.prisma.alterationJob.findMany({
-      where: { tailoringShopId, dueAt: { gte: since } },
+  private async getMonthlyTrend(nurseryId: string, since: Date) {
+    const sessions = await this.prisma.harvestBatch.findMany({
+      where: { nurseryId, harvestedAt: { gte: since } },
       select: {
-        dueAt: true,
-        cashAmount: true,
-        cardAmount: true,
-        rushFee: true,
-        itemCount: true,
+        harvestedAt: true,
+        cashSales: true,
+        cardSales: true,
+        rushPremium: true,
+        unitCount: true,
       },
     });
 
-    const months: Record<string, { games: number; revenue: number; itemCount: number }> = {};
+    const months: Record<string, { games: number; revenue: number; unitCount: number }> = {};
 
     for (let i = 5; i >= 0; i--) {
       const d = new Date();
       d.setMonth(d.getMonth() - i);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      months[key] = { games: 0, revenue: 0, itemCount: 0 };
+      months[key] = { games: 0, revenue: 0, unitCount: 0 };
     }
 
     sessions.forEach((session) => {
-      const key = `${session.dueAt.getFullYear()}-${String(session.dueAt.getMonth() + 1).padStart(2, '0')}`;
+      const key = `${session.harvestedAt.getFullYear()}-${String(session.harvestedAt.getMonth() + 1).padStart(2, '0')}`;
       if (months[key]) {
         months[key].games++;
         months[key].revenue +=
-          session.cashAmount + session.cardAmount + session.rushFee;
-        months[key].itemCount += session.itemCount;
+          session.cashSales + session.cardSales + session.rushPremium;
+        months[key].unitCount += session.unitCount;
       }
     });
 

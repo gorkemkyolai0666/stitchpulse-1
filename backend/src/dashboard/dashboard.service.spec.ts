@@ -6,17 +6,17 @@ describe('DashboardService', () => {
   let service: DashboardService;
 
   const mockPrisma = {
-    tailoringShop: { findUnique: jest.fn() },
-    workstation: { count: jest.fn(), groupBy: jest.fn() },
-    alterationJob: {
+    nursery: { findUnique: jest.fn() },
+    greenhouseBay: { count: jest.fn(), groupBy: jest.fn() },
+    harvestBatch: {
       count: jest.fn(),
       aggregate: jest.fn(),
       findMany: jest.fn().mockResolvedValue([]),
     },
-    equipmentMaintenance: { count: jest.fn(), findMany: jest.fn().mockResolvedValue([]) },
-    qualityChecklist: { count: jest.fn() },
-    serviceRate: { count: jest.fn() },
-    fabricOrder: { count: jest.fn() },
+    equipmentRepair: { count: jest.fn(), findMany: jest.fn().mockResolvedValue([]) },
+    irrigationSchedule: { count: jest.fn() },
+    plantPricing: { count: jest.fn() },
+    plantOrder: { count: jest.fn() },
   };
 
   beforeEach(async () => {
@@ -31,43 +31,43 @@ describe('DashboardService', () => {
     jest.clearAllMocks();
   });
 
-  it('should return tailoring shop dashboard stats', async () => {
-    mockPrisma.tailoringShop.findUnique.mockResolvedValue({ totalWorkstations: 8 });
-    mockPrisma.workstation.count
+  it('should return nursery dashboard stats', async () => {
+    mockPrisma.nursery.findUnique.mockResolvedValue({ totalBays: 8 });
+    mockPrisma.greenhouseBay.count
       .mockResolvedValueOnce(8)
       .mockResolvedValueOnce(4)
       .mockResolvedValueOnce(2);
-    mockPrisma.alterationJob.count.mockResolvedValue(42);
-    mockPrisma.equipmentMaintenance.count
+    mockPrisma.harvestBatch.count.mockResolvedValue(42);
+    mockPrisma.equipmentRepair.count
       .mockResolvedValueOnce(3)
       .mockResolvedValueOnce(1);
-    mockPrisma.alterationJob.aggregate.mockResolvedValue({
-      _sum: { cashAmount: 120, cardAmount: 280, rushFee: 95 },
+    mockPrisma.harvestBatch.aggregate.mockResolvedValue({
+      _sum: { cashSales: 120, cardSales: 280, rushPremium: 95 },
     });
-    mockPrisma.alterationJob.findMany.mockResolvedValue([]);
-    mockPrisma.equipmentMaintenance.findMany.mockResolvedValue([]);
-    mockPrisma.qualityChecklist.count.mockResolvedValue(2);
-    mockPrisma.serviceRate.count.mockResolvedValue(3);
-    mockPrisma.fabricOrder.count
+    mockPrisma.harvestBatch.findMany.mockResolvedValue([]);
+    mockPrisma.equipmentRepair.findMany.mockResolvedValue([]);
+    mockPrisma.irrigationSchedule.count.mockResolvedValue(2);
+    mockPrisma.plantPricing.count.mockResolvedValue(3);
+    mockPrisma.plantOrder.count
       .mockResolvedValueOnce(3)
       .mockResolvedValueOnce(2);
-    mockPrisma.workstation.groupBy.mockResolvedValue([
+    mockPrisma.greenhouseBay.groupBy.mockResolvedValue([
       { zone: 'East Zone', _count: { id: 3 } },
       { zone: 'West Zone', _count: { id: 3 } },
     ]);
 
     const stats = await service.getStats('shop-1');
 
-    expect(stats).toHaveProperty('workstationUtilizationRate');
+    expect(stats).toHaveProperty('greenhouseBayUtilizationRate');
     expect(stats).toHaveProperty('dailyRevenue', 495);
     expect(stats).toHaveProperty('dailyRushFees', 95);
     expect(stats).toHaveProperty('shopZones');
-    expect(stats).toHaveProperty('urgentEquipmentMaintenance');
-    expect(stats).toHaveProperty('pendingQualityChecklist');
-    expect(stats).toHaveProperty('activeServiceRates', 3);
-    expect(stats).toHaveProperty('pendingFabricOrders', 3);
-    expect(stats).toHaveProperty('completedFabricOrders', 2);
-    expect(stats).toHaveProperty('availableWorkstations', 4);
-    expect(stats).toHaveProperty('totalWorkstations', 8);
+    expect(stats).toHaveProperty('urgentEquipmentRepair');
+    expect(stats).toHaveProperty('pendingIrrigationSchedule');
+    expect(stats).toHaveProperty('activePlantPricings', 3);
+    expect(stats).toHaveProperty('pendingPlantOrders', 3);
+    expect(stats).toHaveProperty('completedPlantOrders', 2);
+    expect(stats).toHaveProperty('availableGreenhouseBays', 4);
+    expect(stats).toHaveProperty('totalCapacity', 8);
   });
 });
