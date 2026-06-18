@@ -22,9 +22,9 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.PORT || 4017;
+  const port = process.env.PORT || 4018;
   await app.listen(port);
-  console.log(`StitchPulse API running on port ${port}`);
+  console.log(`GrowPulse API running on port ${port}`);
 }
 
 bootstrap();
