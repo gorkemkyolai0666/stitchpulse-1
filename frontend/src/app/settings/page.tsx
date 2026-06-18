@@ -10,20 +10,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 
-interface TailoringShopProfile {
+interface NurseryProfile {
   name: string;
   phone?: string;
   address?: string;
   city?: string;
   state?: string;
   zipCode?: string;
-  totalWorkstations: number;
+  totalGreenhouseBays: number;
   timezone: string;
 }
 
 export default function SettingsPage() {
   const { token } = useAuth();
-  const [venue, setVenue] = useState<TailoringShopProfile | null>(null);
+  const [venue, setVenue] = useState<NurseryProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -33,9 +33,9 @@ export default function SettingsPage() {
     if (!token) return;
     setLoading(true);
     setError(false);
-    api.tailoringShop
+    api.nursery
       .get(token)
-      .then((data) => setVenue(data as TailoringShopProfile))
+      .then((data) => setVenue(data as NurseryProfile))
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   };
@@ -50,7 +50,7 @@ export default function SettingsPage() {
     setSaving(true);
     setSuccess(false);
     try {
-      await api.tailoringShop.update(token, venue as unknown as Record<string, unknown>);
+      await api.nursery.update(token, venue as unknown as Record<string, unknown>);
       setSuccess(true);
     } catch {
       setError(true);
@@ -64,7 +64,7 @@ export default function SettingsPage() {
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="font-display text-3xl text-primary">Ayarlar</h1>
-          <p className="text-muted-foreground">Terzi atölyesi tesisi profil bilgileri</p>
+          <p className="text-muted-foreground">Bahçıvan atölyesi tesisi profil bilgileri</p>
         </div>
 
         {loading && <LoadingSpinner />}
@@ -133,13 +133,13 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="totalWorkstations">Toplam Oda Sayısı</Label>
+                  <Label htmlFor="totalGreenhouseBays">Toplam Oda Sayısı</Label>
                   <Input
-                    id="totalWorkstations"
+                    id="totalGreenhouseBays"
                     type="number"
-                    value={venue.totalWorkstations}
+                    value={venue.totalGreenhouseBays}
                     onChange={(e) =>
-                      setVenue({ ...venue, totalWorkstations: parseInt(e.target.value, 10) || 0 })
+                      setVenue({ ...venue, totalGreenhouseBays: parseInt(e.target.value, 10) || 0 })
                     }
                   />
                 </div>

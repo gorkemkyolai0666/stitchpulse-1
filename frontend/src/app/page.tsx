@@ -10,7 +10,7 @@ const features = [
   },
   {
     icon: ClipboardList,
-    title: 'Tadilat İşleri',
+    title: 'Hasat İşleri',
     description: 'Günlük gelir, parça sayısı ve acil iş ücretlerini tek panelden izleyin.',
   },
   {
@@ -20,12 +20,12 @@ const features = [
   },
   {
     icon: CheckSquare,
-    title: 'Kalite Kontrol Listeleri',
+    title: 'Sulama Kontrol Listeleri',
     description: 'Son pres, dikiş kontrolü ve prova hazırlığı planlarını takip edin.',
   },
   {
     icon: Package,
-    title: 'Kumaş Siparişleri',
+    title: 'Bitki Siparişi Siparişleri',
     description: 'Müşteri kumaş siparişlerini tedarikçi ve durum bazında yönetin.',
   },
 ];
@@ -39,7 +39,7 @@ export default function LandingPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
               <Scissors className="h-5 w-5" strokeWidth={2} />
             </div>
-            <span className="font-display text-2xl text-primary">StitchPulse</span>
+            <span className="font-display text-2xl text-primary">GrowPulse</span>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" asChild>
@@ -63,10 +63,10 @@ export default function LandingPage() {
           />
           <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6">
             <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-accent">
-              Terzi & Tadilat Atölyesi Operasyon Yönetimi
+              Bahçıvan & Hasat Fidanlıksi Operasyon Yönetimi
             </p>
             <h1 className="font-display max-w-2xl text-4xl leading-tight text-primary md:text-5xl">
-              Atölyenizi, tadilat işlerinizi ve müşteri teslimatlarınızı tek platformda yönetin
+              Fidanlıknizi, tadilat işlerinizi ve müşteri teslimatlarınızı tek platformda yönetin
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
               Bağımsız terzi ve tadilat atölyeleri için iş istasyonu envanteri, tadilat takibi,
@@ -84,7 +84,7 @@ export default function LandingPage() {
               </Button>
             </div>
             <p className="mt-4 font-mono text-xs text-muted-foreground">
-              Demo: demo@heritagetailors.com / demo123456
+              Demo: demo@evergreennursery.com / demo123456
             </p>
           </div>
         </section>

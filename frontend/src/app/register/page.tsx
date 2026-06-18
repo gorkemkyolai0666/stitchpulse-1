@@ -18,7 +18,7 @@ export default function RegisterPage() {
     password: '',
     firstName: '',
     lastName: '',
-    tailoringShopName: '',
+    nurseryName: '',
     phone: '',
     city: '',
     state: '',
@@ -53,7 +53,7 @@ export default function RegisterPage() {
 
       <Card className="atelier-card w-full max-w-lg">
         <CardHeader>
-          <CardTitle className="font-display text-2xl">Yeni Terzi Atölyesi Tesisi Oluştur</CardTitle>
+          <CardTitle className="font-display text-2xl">Yeni Bahçıvan Fidanlıksi Tesisi Oluştur</CardTitle>
           <CardDescription>14 gün ücretsiz deneme ile başlayın</CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,13 +74,13 @@ export default function RegisterPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="tailoringShopName">Tesis Adı</Label>
+              <Label htmlFor="nurseryName">Tesis Adı</Label>
               <Input
-                id="tailoringShopName"
-                value={form.tailoringShopName}
-                onChange={(e) => update('tailoringShopName', e.target.value)}
+                id="nurseryName"
+                value={form.nurseryName}
+                onChange={(e) => update('nurseryName', e.target.value)}
                 required
-                placeholder="Heritage Tailors & Alterations"
+                placeholder="Evergreen Nursery Co."
               />
             </div>
             <div className="space-y-2">
