@@ -1,13 +1,13 @@
 #!/usr/bin/env tsx
 /**
- * Vercel provisioning for StitchPulse frontend.
+ * Vercel provisioning for GrowPulse frontend.
  * Uses GitHub integration — no CLI deployment.
  */
 
-const GITHUB_REPO = process.env.GITHUB_REPO || 'gorkemkyolai06/stitchpulse';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'gorkemkyolai06/growpulse';
 
 async function main() {
-  console.log('Vercel provisioning for StitchPulse frontend');
+  console.log('Vercel provisioning for GrowPulse frontend');
   console.log('Vercel MCP deploy_to_vercel suggests CLI — using GitHub integration instead');
   console.log('\nManual Vercel setup (one-time):');
   console.log(`  1. Import GitHub repo: ${GITHUB_REPO}`);

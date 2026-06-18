@@ -1,8 +1,8 @@
 {
-  "name": "stitchpulse",
+  "name": "growpulse",
   "version": "1.0.0",
   "private": true,
-  "description": "StitchPulse — Tailoring & alteration shop operations SaaS",
+  "description": "GrowPulse — Tailoring & alteration shop operations SaaS",
   "scripts": {
     "provision": "tsx scripts/provision-all.ts",
     "provision:railway": "tsx scripts/provision-railway.ts",

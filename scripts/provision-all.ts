@@ -1,14 +1,14 @@
 #!/usr/bin/env tsx
 /**
- * StitchPulse infrastructure provisioning orchestrator.
+ * GrowPulse infrastructure provisioning orchestrator.
  * Idempotent — safe to run multiple times.
  */
 
-const GITHUB_REPO = process.env.GITHUB_REPO || 'gorkemkyolai06/stitchpulse';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'gorkemkyolai06/growpulse';
 
 async function main() {
   console.log('════════════════════════════════════════════════════════');
-  console.log('StitchPulse Infrastructure Provisioning');
+  console.log('GrowPulse Infrastructure Provisioning');
   console.log(`Repository: ${GITHUB_REPO}`);
   console.log('════════════════════════════════════════════════════════');
 

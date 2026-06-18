@@ -1,11 +1,11 @@
 #!/usr/bin/env tsx
 /**
- * Railway provisioning for StitchPulse backend.
+ * Railway provisioning for GrowPulse backend.
  * Requires RAILWAY_API_TOKEN environment variable.
  */
 
-const PROJECT_NAME = 'stitchpulse';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'gorkemkyolai06/stitchpulse';
+const PROJECT_NAME = 'growpulse';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'gorkemkyolai06/growpulse';
 
 async function main() {
   const token = process.env.RAILWAY_API_TOKEN;

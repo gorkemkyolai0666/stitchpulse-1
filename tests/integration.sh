@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-API_URL="${API_URL:-http://localhost:4017/api}"
+API_URL="${API_URL:-http://localhost:4018/api}"
 PASS=0
 FAIL=0
 
@@ -18,7 +18,7 @@ assert_status() {
   fi
 }
 
-echo "=== StitchPulse Integration Tests ==="
+echo "=== GrowPulse Integration Tests ==="
 echo "API: $API_URL"
 echo ""
 
@@ -27,7 +27,7 @@ assert_status "Health Check" 200 "$HTTP_CODE"
 
 LOGIN_RESPONSE=$(curl -s -w "\n%{http_code}" "$API_URL/auth/login" \
   -H 'Content-Type: application/json' \
-  -d '{"email":"demo@heritagetailors.com","password":"demo123456"}')
+  -d '{"email":"demo@evergreennursery.com","password":"demo123456"}')
 HTTP_CODE=$(echo "$LOGIN_RESPONSE" | tail -1)
 BODY=$(echo "$LOGIN_RESPONSE" | sed '$d')
 assert_status "Login" 200 "$HTTP_CODE"
@@ -42,77 +42,77 @@ fi
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/dashboard/stats" -H "Authorization: Bearer $TOKEN")
 assert_status "Dashboard Stats" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/workstations" -H "Authorization: Bearer $TOKEN")
-assert_status "List Workstations" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/greenhouse-bays" -H "Authorization: Bearer $TOKEN")
+assert_status "List Greenhouse Bays" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/alteration-jobs" -H "Authorization: Bearer $TOKEN")
-assert_status "List Alteration Jobs" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/harvest-batches" -H "Authorization: Bearer $TOKEN")
+assert_status "List Harvest Batches" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/equipment-maintenance" -H "Authorization: Bearer $TOKEN")
-assert_status "List Equipment Maintenance" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/equipment-repairs" -H "Authorization: Bearer $TOKEN")
+assert_status "List Equipment Repairs" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/quality-checklists" -H "Authorization: Bearer $TOKEN")
-assert_status "List Quality Checklists" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/irrigation-schedules" -H "Authorization: Bearer $TOKEN")
+assert_status "List Irrigation Schedules" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/fabric-orders" -H "Authorization: Bearer $TOKEN")
-assert_status "List Fabric Orders" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/plant-orders" -H "Authorization: Bearer $TOKEN")
+assert_status "List Plant Orders" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/service-rates" -H "Authorization: Bearer $TOKEN")
-assert_status "List Service Rates" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/plant-pricing" -H "Authorization: Bearer $TOKEN")
+assert_status "List Plant Pricing" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/tailoring-shop" -H "Authorization: Bearer $TOKEN")
-assert_status "Tailoring Shop Profile" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/nursery" -H "Authorization: Bearer $TOKEN")
+assert_status "Nursery Profile" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/equipment-maintenance/urgent" -H "Authorization: Bearer $TOKEN")
-assert_status "Urgent Equipment Maintenance" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/equipment-repairs/urgent" -H "Authorization: Bearer $TOKEN")
+assert_status "Urgent Equipment Repairs" 200 "$HTTP_CODE"
 
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/fabric-orders/pending" -H "Authorization: Bearer $TOKEN")
-assert_status "Pending Fabric Orders" 200 "$HTTP_CODE"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/plant-orders/pending" -H "Authorization: Bearer $TOKEN")
+assert_status "Pending Plant Orders" 200 "$HTTP_CODE"
 
-CREATE_ROOM=$(curl -s -w "\n%{http_code}" "$API_URL/workstations" \
+CREATE_BAY=$(curl -s -w "\n%{http_code}" "$API_URL/greenhouse-bays" \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: application/json' \
-  -d '{"name":"Test Station #99","zone":"Test Zone","specialty":"formal","notes":"Integration test station"}')
-HTTP_CODE=$(echo "$CREATE_ROOM" | tail -1)
-assert_status "Create Workstation" 201 "$HTTP_CODE"
+  -d '{"name":"Test Bay #99","zone":"Test Zone","climateType":"temperate","notes":"Integration test bay"}')
+HTTP_CODE=$(echo "$CREATE_BAY" | tail -1)
+assert_status "Create Greenhouse Bay" 201 "$HTTP_CODE"
 
-ROOM_ID=$(echo "$CREATE_ROOM" | sed '$d' | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])" 2>/dev/null || echo "")
+BAY_ID=$(echo "$CREATE_BAY" | sed '$d' | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])" 2>/dev/null || echo "")
 
-if [ -n "$ROOM_ID" ]; then
-  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/workstations/$ROOM_ID" \
+if [ -n "$BAY_ID" ]; then
+  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/greenhouse-bays/$BAY_ID" \
     -H "Authorization: Bearer $TOKEN" \
     -H 'Content-Type: application/json' \
     -X PATCH \
     -d '{"status":"maintenance"}')
-  assert_status "Update Workstation" 200 "$HTTP_CODE"
+  assert_status "Update Greenhouse Bay" 200 "$HTTP_CODE"
 
-  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/workstations/$ROOM_ID" \
+  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/greenhouse-bays/$BAY_ID" \
     -H "Authorization: Bearer $TOKEN" \
     -X DELETE)
-  assert_status "Delete Workstation" 200 "$HTTP_CODE"
+  assert_status "Delete Greenhouse Bay" 200 "$HTTP_CODE"
 fi
 
-CREATE_PROP=$(curl -s -w "\n%{http_code}" "$API_URL/fabric-orders" \
+CREATE_ORDER=$(curl -s -w "\n%{http_code}" "$API_URL/plant-orders" \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: application/json' \
-  -d '{"customerName":"Test Customer","fabricType":"İpek Saten","supplierName":"Fabricut Chicago","price":99}')
-HTTP_CODE=$(echo "$CREATE_PROP" | tail -1)
-assert_status "Create Fabric Order" 201 "$HTTP_CODE"
+  -d '{"buyerName":"Test Buyer","plantVariety":"Lavender Plugs","supplierName":"Pacific Plug","price":99}')
+HTTP_CODE=$(echo "$CREATE_ORDER" | tail -1)
+assert_status "Create Plant Order" 201 "$HTTP_CODE"
 
-PROP_ID=$(echo "$CREATE_PROP" | sed '$d' | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])" 2>/dev/null || echo "")
+ORDER_ID=$(echo "$CREATE_ORDER" | sed '$d' | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])" 2>/dev/null || echo "")
 
-if [ -n "$PROP_ID" ]; then
-  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/fabric-orders/$PROP_ID" \
+if [ -n "$ORDER_ID" ]; then
+  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/plant-orders/$ORDER_ID" \
     -H "Authorization: Bearer $TOKEN" \
     -H 'Content-Type: application/json' \
     -X PATCH \
     -d '{"status":"in_progress"}')
-  assert_status "Update Fabric Order" 200 "$HTTP_CODE"
+  assert_status "Update Plant Order" 200 "$HTTP_CODE"
 
-  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/fabric-orders/$PROP_ID" \
+  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/plant-orders/$ORDER_ID" \
     -H "Authorization: Bearer $TOKEN" \
     -X DELETE)
-  assert_status "Delete Fabric Order" 200 "$HTTP_CODE"
+  assert_status "Delete Plant Order" 200 "$HTTP_CODE"
 fi
 
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/dashboard/stats")
