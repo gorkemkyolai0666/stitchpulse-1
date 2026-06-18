@@ -150,7 +150,7 @@ Every page must include:
 Ensure:
 
 * WCAG AA compliance
-* Kumaşer visual hierarchy
+* Bitki Siparişier visual hierarchy
 * Mobile responsiveness
 * Consistent user flows
 * Fast perceived performance

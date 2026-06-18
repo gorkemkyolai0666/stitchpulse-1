@@ -4,13 +4,13 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: stitchpulse
-      POSTGRES_PASSWORD: stitchpulse123
-      POSTGRES_DB: stitchpulse
+      POSTGRES_USER: growpulse
+      POSTGRES_PASSWORD: growpulse123
+      POSTGRES_DB: growpulse
     ports:
       - '5457:5432'
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U stitchpulse']
+      test: ['CMD-SHELL', 'pg_isready -U growpulse']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -20,8 +20,8 @@ services:
     ports:
       - '4017:4017'
     environment:
-      DATABASE_URL: postgresql://stitchpulse:stitchpulse123@postgres:5432/stitchpulse?schema=public
-      JWT_SECRET: stitchpulse-dev-secret
+      DATABASE_URL: postgresql://growpulse:growpulse123@postgres:5432/growpulse?schema=public
+      JWT_SECRET: growpulse-dev-secret
       FRONTEND_URL: http://localhost:3017
       PORT: 4017
     depends_on:

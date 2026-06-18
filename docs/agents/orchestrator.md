@@ -266,7 +266,7 @@ Support:
 Requirements:
 
 * WCAG AA accessibility compliance
-* Kumaşer visual hierarchy
+* Bitki Siparişier visual hierarchy
 * Consistent spacing
 * Loading states
 * Empty states
