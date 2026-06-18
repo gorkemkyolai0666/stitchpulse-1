@@ -10,250 +10,250 @@ datasource db {
 enum UserRole {
   owner
   manager
-  tailor
+  grower
 }
 
-enum WorkstationSpecialty {
-  formal
-  bridal
-  casual
-  leather
-  denim
+enum BayClimateType {
+  tropical
+  temperate
+  arid
+  propagation
+  shade
   specialty
 }
 
-enum WorkstationStatus {
-  available
-  in_use
-  cleaning
+enum BayStatus {
+  active
+  growing
+  sanitizing
   maintenance
   closed
 }
 
-enum JobStatus {
+enum HarvestStatus {
   recorded
   verified
   disputed
 }
 
-enum JobType {
-  hem
-  suit
-  wedding_dress
-  leather
-  denim
+enum HarvestType {
+  cuttings
+  seedlings
+  mature
+  herbs
+  seasonal
   rush
 }
 
-enum EquipmentPriority {
+enum RepairPriority {
   low
   medium
   high
   urgent
 }
 
-enum EquipmentStatus {
+enum RepairStatus {
   open
   in_progress
   completed
   cancelled
 }
 
-enum ChecklistCategory {
-  final_press
-  stitch_inspection
-  fitting_prep
-  button_check
-  lining_review
+enum IrrigationCategory {
+  drip_cycle
+  misting
+  fertilizer
+  pest_scouting
+  soil_check
   other
 }
 
-enum ChecklistStatus {
+enum ScheduleStatus {
   scheduled
   in_progress
   completed
   overdue
 }
 
-enum ServiceCategory {
-  basic_alteration
-  bridal_package
-  rush_service
-  leather_work
-  custom_fitting
+enum PlantCategory {
+  annual_tray
+  perennial_pot
+  herb_flat
+  tree_liner
+  bulk_wholesale
   other
 }
 
-enum ServiceRateStatus {
+enum PricingStatus {
   active
   upcoming
   archived
 }
 
-enum FabricOrderStatus {
+enum OrderStatus {
   pending
   in_progress
   completed
   delivered
 }
 
-model TailoringShop {
-  id                String   @id @default(uuid())
-  name              String
-  phone             String?
-  address           String?
-  city              String?
-  state             String?
-  zipCode           String?  @map("zip_code")
-  totalWorkstations Int      @default(6) @map("total_workstations")
-  timezone          String   @default("America/Chicago")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+model Nursery {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String?
+  address    String?
+  city       String?
+  state      String?
+  zipCode    String?  @map("zip_code")
+  totalBays  Int      @default(6) @map("total_bays")
+  timezone   String   @default("America/Chicago")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  users                User[]
-  workstations         Workstation[]
-  alterationJobs       AlterationJob[]
-  equipmentMaintenance EquipmentMaintenance[]
-  qualityChecklists    QualityChecklist[]
-  serviceRates         ServiceRate[]
-  fabricOrders         FabricOrder[]
+  users               User[]
+  greenhouseBays      GreenhouseBay[]
+  harvestBatches      HarvestBatch[]
+  equipmentRepairs    EquipmentRepair[]
+  irrigationSchedules IrrigationSchedule[]
+  plantPricing        PlantPricing[]
+  plantOrders         PlantOrder[]
 
-  @@map("tailoring_shops")
+  @@map("nurseries")
 }
 
 model User {
-  id              String   @id @default(uuid())
-  email           String   @unique
-  passwordHash    String   @map("password_hash")
-  firstName       String   @map("first_name")
-  lastName        String   @map("last_name")
-  role            UserRole @default(owner)
-  tailoringShopId String   @map("tailoring_shop_id")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  firstName    String   @map("first_name")
+  lastName     String   @map("last_name")
+  role         UserRole @default(owner)
+  nurseryId    String   @map("nursery_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  tailoringShop TailoringShop @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
+  nursery Nursery @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
 
   @@map("users")
 }
 
-model Workstation {
-  id              String               @id @default(uuid())
-  tailoringShopId String               @map("tailoring_shop_id")
-  name            String
-  zone            String
-  specialty       WorkstationSpecialty @default(formal)
-  machineModel    String?              @map("machine_model")
-  status          WorkstationStatus    @default(available)
-  notes           String?
-  createdAt       DateTime             @default(now()) @map("created_at")
-  updatedAt       DateTime             @updatedAt @map("updated_at")
+model GreenhouseBay {
+  id               String          @id @default(uuid())
+  nurseryId        String          @map("nursery_id")
+  name             String
+  zone             String
+  climateType      BayClimateType  @default(temperate) @map("climate_type")
+  irrigationSystem String?         @map("irrigation_system")
+  status           BayStatus       @default(active)
+  notes            String?
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
 
-  tailoringShop        TailoringShop          @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
-  alterationJobs       AlterationJob[]
-  equipmentMaintenance EquipmentMaintenance[]
+  nursery            Nursery            @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
+  harvestBatches     HarvestBatch[]
+  equipmentRepairs   EquipmentRepair[]
 
-  @@unique([tailoringShopId, name])
-  @@index([tailoringShopId, status])
-  @@map("workstations")
+  @@unique([nurseryId, name])
+  @@index([nurseryId, status])
+  @@map("greenhouse_bays")
 }
 
-model AlterationJob {
-  id              String    @id @default(uuid())
-  tailoringShopId String    @map("tailoring_shop_id")
-  workstationId   String    @map("workstation_id")
-  dueAt           DateTime  @map("due_at")
-  jobType         JobType   @default(hem) @map("job_type")
-  cashAmount      Float     @default(0) @map("cash_amount")
-  cardAmount      Float     @default(0) @map("card_amount")
-  itemCount       Int       @default(1) @map("item_count")
-  rushFee         Float     @default(0) @map("rush_fee")
-  status          JobStatus @default(recorded)
+model HarvestBatch {
+  id              String        @id @default(uuid())
+  nurseryId       String        @map("nursery_id")
+  greenhouseBayId String        @map("greenhouse_bay_id")
+  harvestedAt     DateTime      @map("harvested_at")
+  harvestType     HarvestType   @default(seedlings) @map("harvest_type")
+  cashSales       Float         @default(0) @map("cash_sales")
+  cardSales       Float         @default(0) @map("card_sales")
+  unitCount       Int           @default(1) @map("unit_count")
+  rushPremium     Float         @default(0) @map("rush_premium")
+  status          HarvestStatus @default(recorded)
   notes           String?
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
 
-  tailoringShop TailoringShop @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
-  workstation   Workstation   @relation(fields: [workstationId], references: [id], onDelete: Cascade)
+  nursery       Nursery       @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
+  greenhouseBay GreenhouseBay @relation(fields: [greenhouseBayId], references: [id], onDelete: Cascade)
 
-  @@index([tailoringShopId, dueAt])
-  @@index([tailoringShopId, status])
-  @@map("alteration_jobs")
+  @@index([nurseryId, harvestedAt])
+  @@index([nurseryId, status])
+  @@map("harvest_batches")
 }
 
-model EquipmentMaintenance {
-  id              String            @id @default(uuid())
-  tailoringShopId String            @map("tailoring_shop_id")
-  workstationId   String            @map("workstation_id")
+model EquipmentRepair {
+  id              String         @id @default(uuid())
+  nurseryId       String         @map("nursery_id")
+  greenhouseBayId String         @map("greenhouse_bay_id")
   title           String
   description     String?
-  reportedAt      DateTime          @map("reported_at")
-  completedAt     DateTime?         @map("completed_at")
-  priority        EquipmentPriority @default(medium)
-  status          EquipmentStatus   @default(open)
+  reportedAt      DateTime       @map("reported_at")
+  completedAt     DateTime?      @map("completed_at")
+  priority        RepairPriority @default(medium)
+  status          RepairStatus   @default(open)
   cost            Float?
   notes           String?
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
 
-  tailoringShop TailoringShop @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
-  workstation   Workstation   @relation(fields: [workstationId], references: [id], onDelete: Cascade)
+  nursery       Nursery       @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
+  greenhouseBay GreenhouseBay @relation(fields: [greenhouseBayId], references: [id], onDelete: Cascade)
 
-  @@index([tailoringShopId, status])
-  @@index([tailoringShopId, priority])
-  @@map("equipment_maintenance")
+  @@index([nurseryId, status])
+  @@index([nurseryId, priority])
+  @@map("equipment_repairs")
 }
 
-model QualityChecklist {
-  id              String            @id @default(uuid())
-  tailoringShopId String            @map("tailoring_shop_id")
+model IrrigationSchedule {
+  id          String             @id @default(uuid())
+  nurseryId   String             @map("nursery_id")
+  title       String
+  description String?
+  category    IrrigationCategory @default(other)
+  zone        String?
+  scheduledAt DateTime           @map("scheduled_at")
+  status      ScheduleStatus     @default(scheduled)
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+
+  nursery Nursery @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
+
+  @@index([nurseryId, scheduledAt])
+  @@map("irrigation_schedules")
+}
+
+model PlantPricing {
+  id              String        @id @default(uuid())
+  nurseryId       String        @map("nursery_id")
   title           String
-  description     String?
-  category        ChecklistCategory @default(other)
-  zone            String?
-  scheduledAt     DateTime          @map("scheduled_at")
-  status          ChecklistStatus   @default(scheduled)
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
+  plantCategory   PlantCategory @default(other) @map("plant_category")
+  status          PricingStatus @default(active)
+  basePrice       Float         @map("base_price")
+  priceMultiplier Float         @default(1.0) @map("price_multiplier")
+  notes           String?
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
 
-  tailoringShop TailoringShop @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
+  nursery Nursery @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
 
-  @@index([tailoringShopId, scheduledAt])
-  @@map("quality_checklists")
+  @@index([nurseryId, plantCategory])
+  @@map("plant_pricing")
 }
 
-model ServiceRate {
-  id              String            @id @default(uuid())
-  tailoringShopId String            @map("tailoring_shop_id")
-  title           String
-  rateCategory    ServiceCategory   @default(basic_alteration) @map("rate_category")
-  status          ServiceRateStatus @default(active)
-  basePrice       Float             @map("base_price")
-  priceMultiplier Float             @default(1.0) @map("price_multiplier")
-  notes           String?
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
+model PlantOrder {
+  id           String      @id @default(uuid())
+  nurseryId    String      @map("nursery_id")
+  buyerName    String      @map("buyer_name")
+  plantVariety String      @map("plant_variety")
+  supplierName String?     @map("supplier_name")
+  status       OrderStatus @default(pending)
+  price        Float       @default(0)
+  notes        String?
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
 
-  tailoringShop TailoringShop @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
+  nursery Nursery @relation(fields: [nurseryId], references: [id], onDelete: Cascade)
 
-  @@index([tailoringShopId, rateCategory])
-  @@map("service_rates")
-}
-
-model FabricOrder {
-  id              String            @id @default(uuid())
-  tailoringShopId String            @map("tailoring_shop_id")
-  customerName    String            @map("customer_name")
-  fabricType      String            @map("fabric_type")
-  supplierName    String?           @map("supplier_name")
-  status          FabricOrderStatus @default(pending)
-  price           Float             @default(0)
-  notes           String?
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-
-  tailoringShop TailoringShop @relation(fields: [tailoringShopId], references: [id], onDelete: Cascade)
-
-  @@index([tailoringShopId, status])
-  @@map("fabric_orders")
+  @@index([nurseryId, status])
+  @@map("plant_orders")
 }

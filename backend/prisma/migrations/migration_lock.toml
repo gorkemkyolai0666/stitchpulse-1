@@ -1,1 +1,2 @@
+migration_lock.toml
 provider = "postgresql"
