@@ -13,41 +13,41 @@ import {
   formatCurrency,
   formatDateTime,
   formatPercent,
-  formatJobStatus,
-  formatEquipmentMaintenanceStatus,
-  formatEquipmentMaintenancePriority,
-  formatWorkstationSpecialty,
-  formatJobType,
+  formatHarvestStatus,
+  formatEquipmentRepairStatus,
+  formatEquipmentRepairPriority,
+  formatBayClimateType,
+  formatHarvestType,
 } from '@/lib/utils';
 
 interface DashboardStats {
-  totalWorkstations: number;
-  availableWorkstations: number;
-  inUseWorkstations: number;
-  workstationUtilizationRate: number;
-  openEquipmentMaintenance: number;
-  urgentEquipmentMaintenance: number;
-  pendingQualityChecklist: number;
+  totalGreenhouseBays: number;
+  availableGreenhouseBays: number;
+  inUseGreenhouseBays: number;
+  greenhouseBayUtilizationRate: number;
+  openEquipmentRepair: number;
+  urgentEquipmentRepair: number;
+  pendingIrrigationSchedule: number;
   dailyRevenue: number;
   recentJobs: Array<{
     id: string;
-    cashAmount: number;
-    cardAmount: number;
-    rushFee: number;
-    dueAt: string;
-    jobType?: string;
+    cashSales: number;
+    cardSales: number;
+    rushPremium: number;
+    harvestedAt: string;
+    harvestType?: string;
     status: string;
-    workstation?: { name: string; zone: string; specialty: string };
+    greenhouseBay?: { name: string; zone: string; climateType: string };
   }>;
-  recentEquipmentMaintenance: Array<{
+  recentEquipmentRepair: Array<{
     id: string;
     title: string;
     priority: string;
     status: string;
     reportedAt: string;
-    workstation?: { name: string; zone: string };
+    greenhouseBay?: { name: string; zone: string };
   }>;
-  shopZones: Array<{ zone: string; workstationCount: number }>;
+  shopZones: Array<{ zone: string; greenhouseBayCount: number }>;
   monthlyTrend: Array<{ month: string; games: number; revenue: number }>;
 }
 
@@ -93,25 +93,25 @@ export default function DashboardPage() {
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <StatCard
                 title="Oda Kullanımı"
-                value={formatPercent(stats.workstationUtilizationRate)}
-                description={`${stats.availableWorkstations}/${stats.totalWorkstations} oda müsait`}
+                value={formatPercent(stats.greenhouseBayUtilizationRate)}
+                description={`${stats.availableGreenhouseBays}/${stats.totalGreenhouseBays} oda müsait`}
                 icon={<CircleDot className="h-4 w-4" />}
               />
               <StatCard
                 title="Günlük Gelir"
                 value={formatCurrency(stats.dailyRevenue)}
-                description={`${stats.inUseWorkstations} oda oyunda`}
+                description={`${stats.inUseGreenhouseBays} oda oyunda`}
                 icon={<DollarSign className="h-4 w-4" />}
               />
               <StatCard
                 title="Ekipman Bakımı"
-                value={stats.openEquipmentMaintenance}
-                description={`${stats.urgentEquipmentMaintenance} acil/yüksek öncelik`}
+                value={stats.openEquipmentRepair}
+                description={`${stats.urgentEquipmentRepair} acil/yüksek öncelik`}
                 icon={<Puzzle className="h-4 w-4" />}
               />
               <StatCard
-                title="Kalite Kontrol Planı"
-                value={stats.pendingQualityChecklist}
+                title="Sulama Kontrol Planı"
+                value={stats.pendingIrrigationSchedule}
                 description="7 gün içinde planlanan"
                 icon={<ClipboardCheck className="h-4 w-4" />}
               />
@@ -121,7 +121,7 @@ export default function DashboardPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-display text-lg">
                   <Users className="h-4 w-4 text-accent" />
-                  Son Tadilat İşleri
+                  Son Hasat İşleri
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -135,20 +135,20 @@ export default function DashboardPage() {
                         className="flex flex-wrap items-center justify-between gap-2 bg-muted/40 px-4 py-3"
                       >
                         <div>
-                          <p className="font-semibold">{session.workstation?.name || '—'}</p>
+                          <p className="font-semibold">{session.greenhouseBay?.name || '—'}</p>
                           <p className="text-xs text-muted-foreground">
-                            {session.workstation?.zone} · {formatWorkstationSpecialty(session.workstation?.specialty || '')} · {formatJobType(session.jobType || '')}
+                            {session.greenhouseBay?.zone} · {formatBayClimateType(session.greenhouseBay?.climateType || '')} · {formatHarvestType(session.harvestType || '')}
                           </p>
                         </div>
                         <div className="text-right">
                           <p className="font-mono font-semibold">
                             {formatCurrency(
-                              session.cashAmount + session.cardAmount + session.rushFee,
+                              session.cashSales + session.cardSales + session.rushPremium,
                             )}
                           </p>
-                          <p className="text-xs text-muted-foreground">{formatDateTime(session.dueAt)}</p>
+                          <p className="text-xs text-muted-foreground">{formatDateTime(session.harvestedAt)}</p>
                         </div>
-                        <Badge variant="secondary">{formatJobStatus(session.status)}</Badge>
+                        <Badge variant="secondary">{formatHarvestStatus(session.status)}</Badge>
                       </div>
                     ))}
                   </div>
@@ -164,16 +164,16 @@ export default function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {stats.recentEquipmentMaintenance.length === 0 ? (
+                {stats.recentEquipmentRepair.length === 0 ? (
                   <p className="text-sm text-muted-foreground">Açık bakım kaydı yok.</p>
                 ) : (
                   <div className="space-y-3">
-                    {stats.recentEquipmentMaintenance.map((item) => (
+                    {stats.recentEquipmentRepair.map((item) => (
                       <div key={item.id} className="bg-muted/40 px-4 py-3">
                         <p className="font-semibold">{item.title}</p>
                         <p className="text-xs text-muted-foreground">
-                          {item.workstation?.name || 'İstasyon belirtilmemiş'} · {item.workstation?.zone} · {formatEquipmentMaintenancePriority(item.priority)} ·{' '}
-                          {formatEquipmentMaintenanceStatus(item.status)}
+                          {item.greenhouseBay?.name || 'İstasyon belirtilmemiş'} · {item.greenhouseBay?.zone} · {formatEquipmentRepairPriority(item.priority)} ·{' '}
+                          {formatEquipmentRepairStatus(item.status)}
                         </p>
                       </div>
                     ))}
@@ -211,7 +211,7 @@ export default function DashboardPage() {
                   {stats.shopZones.map((w) => (
                     <div key={w.zone} className="flex justify-between text-sm">
                       <span>{w.zone}</span>
-                      <Badge variant="secondary">{w.workstationCount} oda</Badge>
+                      <Badge variant="secondary">{w.greenhouseBayCount} oda</Badge>
                     </div>
                   ))}
                 </CardContent>
