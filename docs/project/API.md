@@ -1,4 +1,4 @@
-# StitchPulse — API (API)
+# GrowPulse — API (API)
 
 Base URL: `{NEXT_PUBLIC_API_URL}` (production: Railway backend URL + `/api`)
 
@@ -36,53 +36,53 @@ Base URL: `{NEXT_PUBLIC_API_URL}` (production: Railway backend URL + `/api`)
 
 | Method | Endpoint | Auth | Status |
 |--------|----------|------|--------|
-| GET | /api/alteration-jobs | Yes | 200 |
-| GET | /api/alteration-jobs/:id | Yes | 200 |
-| POST | /api/alteration-jobs | Yes | 201 |
-| PATCH | /api/alteration-jobs/:id | Yes | 200 |
-| DELETE | /api/alteration-jobs/:id | Yes | 200 |
+| GET | /api/harvest-batches | Yes | 200 |
+| GET | /api/harvest-batches/:id | Yes | 200 |
+| POST | /api/harvest-batches | Yes | 201 |
+| PATCH | /api/harvest-batches/:id | Yes | 200 |
+| DELETE | /api/harvest-batches/:id | Yes | 200 |
 
 ## Ball Machine Maintenance
 
 | Method | Endpoint | Auth | Status |
 |--------|----------|------|--------|
-| GET | /api/equipment-maintenance | Yes | 200 |
-| GET | /api/equipment-maintenance/urgent | Yes | 200 |
-| GET | /api/equipment-maintenance/:id | Yes | 200 |
-| POST | /api/equipment-maintenance | Yes | 201 |
-| PATCH | /api/equipment-maintenance/:id | Yes | 200 |
-| DELETE | /api/equipment-maintenance/:id | Yes | 200 |
+| GET | /api/equipment-repairs | Yes | 200 |
+| GET | /api/equipment-repairs/urgent | Yes | 200 |
+| GET | /api/equipment-repairs/:id | Yes | 200 |
+| POST | /api/equipment-repairs | Yes | 201 |
+| PATCH | /api/equipment-repairs/:id | Yes | 200 |
+| DELETE | /api/equipment-repairs/:id | Yes | 200 |
 
 ## Court Maintenance
 
 | Method | Endpoint | Auth | Status |
 |--------|----------|------|--------|
-| GET | /api/quality-checklists | Yes | 200 |
-| GET | /api/quality-checklists/:id | Yes | 200 |
-| POST | /api/quality-checklists | Yes | 201 |
-| PATCH | /api/quality-checklists/:id | Yes | 200 |
-| DELETE | /api/quality-checklists/:id | Yes | 200 |
+| GET | /api/irrigation-schedules | Yes | 200 |
+| GET | /api/irrigation-schedules/:id | Yes | 200 |
+| POST | /api/irrigation-schedules | Yes | 201 |
+| PATCH | /api/irrigation-schedules/:id | Yes | 200 |
+| DELETE | /api/irrigation-schedules/:id | Yes | 200 |
 
 ## Stringing Orders
 
 | Method | Endpoint | Auth | Status |
 |--------|----------|------|--------|
-| GET | /api/fabric-orders | Yes | 200 |
-| GET | /api/fabric-orders/pending | Yes | 200 |
-| GET | /api/fabric-orders/:id | Yes | 200 |
-| POST | /api/fabric-orders | Yes | 201 |
-| PATCH | /api/fabric-orders/:id | Yes | 200 |
-| DELETE | /api/fabric-orders/:id | Yes | 200 |
+| GET | /api/plant-orders | Yes | 200 |
+| GET | /api/plant-orders/pending | Yes | 200 |
+| GET | /api/plant-orders/:id | Yes | 200 |
+| POST | /api/plant-orders | Yes | 201 |
+| PATCH | /api/plant-orders/:id | Yes | 200 |
+| DELETE | /api/plant-orders/:id | Yes | 200 |
 
 ## Rate Tiers
 
 | Method | Endpoint | Auth | Status |
 |--------|----------|------|--------|
-| GET | /api/service-rates | Yes | 200 |
-| GET | /api/service-rates/:id | Yes | 200 |
-| POST | /api/service-rates | Yes | 201 |
-| PATCH | /api/service-rates/:id | Yes | 200 |
-| DELETE | /api/service-rates/:id | Yes | 200 |
+| GET | /api/plant-pricing | Yes | 200 |
+| GET | /api/plant-pricing/:id | Yes | 200 |
+| POST | /api/plant-pricing | Yes | 201 |
+| PATCH | /api/plant-pricing/:id | Yes | 200 |
+| DELETE | /api/plant-pricing/:id | Yes | 200 |
 
 ## Dashboard
 

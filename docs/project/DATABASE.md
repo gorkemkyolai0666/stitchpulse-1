@@ -1,4 +1,4 @@
-# StitchPulse — Veritabanı (DATABASE)
+# GrowPulse — Veritabanı (DATABASE)
 
 ## PostgreSQL
 
@@ -8,14 +8,14 @@ Connection: `DATABASE_URL` environment variable
 
 | Model | Tablo | Açıklama |
 |-------|-------|----------|
-| TailoringShop | tailoring_shops | Tenis tesisi profili |
+| Nursery | tailoring_shops | Tenis tesisi profili |
 | User | users | Kullanıcı hesapları |
 | Court | courts | Kort envanteri |
-| AlterationJob | alteration_jobs | Ders gelir kayıtları |
-| EquipmentMaintenance | equipment_maintenance | Top makinesi bakım |
-| QualityChecklist | quality_checklists | Kort bakım planı |
-| FabricOrder | fabric_orders | Kordon siparişleri |
-| ServiceRate | service_rates | Tarife kademeleri |
+| HarvestBatch | harvest_batches | Ders gelir kayıtları |
+| EquipmentRepair | equipment_repairs | Top makinesi bakım |
+| IrrigationSchedule | irrigation_schedules | Kort bakım planı |
+| PlantOrder | plant_orders | Kordon siparişleri |
+| PlantPricing | plant_pricing | Tarife kademeleri |
 
 ## Migration
 
@@ -27,8 +27,8 @@ npm run deploy       # migrate + seed + start:prod
 
 ## Seed Verisi
 
-- 1 tesis: Heritage Tailors & Alterations (Phoenix, AZ)
-- 1 demo kullanıcı: demo@heritagetailors.com
+- 1 tesis: Evergreen Nursery Co. (Phoenix, AZ)
+- 1 demo kullanıcı: demo@evergreennursery.com
 - 8 kort (kil, sert, çim, kapalı)
 - 2 ders oturumu
 - 2 top makinesi bakım kaydı
