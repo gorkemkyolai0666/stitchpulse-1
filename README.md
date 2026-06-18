@@ -1,6 +1,6 @@
 # GrowPulse
 
-Bahçivan ve tadilat atölyesi operasyon yönetimi B2B SaaS platformu.
+Bahçıvan ve tadilat atölyesi operasyon yönetimi B2B SaaS platformu.
 
 ## Stack
 
