@@ -1,4 +1,4 @@
-# StitchPulse — Görevler (TASKS)
+# GrowPulse — Görevler (TASKS)
 
 ## Tamamlanan
 

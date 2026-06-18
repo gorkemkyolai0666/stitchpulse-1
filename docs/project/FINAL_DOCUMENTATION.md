@@ -1,42 +1,39 @@
-# StitchPulse — Final Documentation
+# GrowPulse — Final Documentation
 
-**Proje:** StitchPulse  
-**Repo:** https://github.com/gorkemkyolai06/stitchpulse  
-**Tamamlanma:** 2026-06-17  
-**Durum:** MVP tamamlandı, deployment bekliyor
+**Tamamlanma**: 2026-06-18  
+**Repo**: https://github.com/gorkemkyolai0666/stitchpulse-1
 
-## Ürün Özeti
+## Proje Özeti
 
-Terzi ve tadilat atölyeleri için operasyon yönetim SaaS platformu. NestJS + Prisma + PostgreSQL backend, Next.js + Tailwind + shadcn/ui frontend.
+| Boyut | Değer |
+|-------|-------|
+| **Proje** | GrowPulse |
+| **Sektör** | Hortikültür / sera & fidanlık operasyonları |
+| **Hedef Kitle** | ABD'deki 5-20 sera bölümlü bağımsız fidanlık operatörleri |
+| **Problem** | Sulama planları, hasat kayıtları ve ekipman bakımı kağıt/Excel ile yönetiliyor |
+| **İş Modeli** | B2B SaaS — sera başına $4-10/ay |
+| **Tasarım** | Content-first Botanical Editorial |
+| **Demo** | demo@evergreennursery.com / demo123456 |
 
-## Modüller
+## Teknik Stack
 
-| Modül | API Prefix | Açıklama |
-|-------|-----------|----------|
-| TailoringShop | /api/tailoring-shop | Atölye profili |
-| Workstations | /api/workstations | İş istasyonu envanteri |
-| AlterationJobs | /api/alteration-jobs | Tadilat işleri |
-| EquipmentMaintenance | /api/equipment-maintenance | Ekipman bakımı |
-| QualityChecklists | /api/quality-checklists | Kalite kontrol |
-| FabricOrders | /api/fabric-orders | Kumaş siparişleri |
-| ServiceRates | /api/service-rates | Hizmet tarifeleri |
-| Dashboard | /api/dashboard/stats | Özet istatistikler |
+- Backend: NestJS + Prisma + PostgreSQL
+- Frontend: Next.js 14 + Tailwind + shadcn-style UI
+- CI: GitHub Actions (backend tests + integration + frontend build + provision)
+- Deploy: Railway (backend) + Vercel (frontend)
 
-## Demo
+## API Modülleri
 
-```
-E-posta: demo@heritagetailors.com
-Şifre: demo123456
-```
+| Modül | Endpoint | Açıklama |
+|-------|----------|----------|
+| Nursery | /api/nursery | Fidanlık profili |
+| GreenhouseBays | /api/greenhouse-bays | Sera bölümleri |
+| HarvestBatches | /api/harvest-batches | Hasat kayıtları |
+| EquipmentRepairs | /api/equipment-repairs | Ekipman onarım |
+| IrrigationSchedules | /api/irrigation-schedules | Sulama planları |
+| PlantOrders | /api/plant-orders | Bitki siparişleri |
+| PlantPricing | /api/plant-pricing | Fiyat listesi |
 
-## Kararlar
+## Deployment Notları
 
-1. EscapePulse şablonundan domain dönüşümü (`scripts/transform-from-escapepulse.py`)
-2. Premium Editorial Fashion tasarım yönü — üst navigasyon, terracotta paleti
-3. Ayrı public GitHub reposu (fabrika deposu dışında)
-4. Deployment: Railway backend + Vercel frontend via GitHub integration
-
-## Eksikler
-
-- Production URL'ler (RAILWAY_API_TOKEN ve platform entegrasyonları eksik)
-- Factory memory'de kayıtlı
+Deployment, organization-level GitHub Actions secrets (`GH_PAT`, `RAILWAY_API_TOKEN`, `VERCEL_TOKEN`) yapılandırıldığında `npm run provision` ile otomatik tamamlanır.

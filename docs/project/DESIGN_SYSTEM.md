@@ -1,35 +1,41 @@
-# StitchPulse — Tasarım Sistemi
+# GrowPulse Design System
 
-**Yön:** Premium Editorial Fashion  
-**Farklılaşma:** Üst yatay navigasyon, terracotta-krem-sage paleti, yuvarlak köşeler
-
-## Tipografi
-
-| Rol | Font |
-|-----|------|
-| Display | Playfair Display |
-| Body/UI | DM Sans |
-| Mono | system monospace |
+**Tasarım Yönü**: Content-first Botanical Editorial  
+**Tarih**: 2026-06-18
 
 ## Renk Paleti
 
-| Token | Açıklama | Light | Dark |
-|-------|----------|-------|------|
-| `--accent` | Terracotta CTA | hsl(14 52% 52%) | hsl(14 48% 58%) |
-| `--background` | Krem zemin | hsl(35 30% 97%) | hsl(20 16% 9%) |
-| `--secondary` | Sage vurgu | hsl(140 12% 88%) | hsl(140 10% 18%) |
-| `--primary` | Kömür metin | hsl(20 18% 16%) | hsl(35 25% 94%) |
+| Token | Light | Dark | Kullanım |
+|-------|-------|------|----------|
+| primary | #1B4332 (orman yeşili) | krem | Başlıklar, aktif nav |
+| accent / bloom | #BC6C25 (terracotta) | açık terracotta | CTA, vurgular |
+| leaf | #40916C | açık yeşil | Başarı, ikonlar |
+| background | #FEFAE0 (krem) | #0D1F17 | Sayfa zemini |
+| muted | #E9EDC9 | #1A2E24 | İkincil metin |
 
-## Bileşen Dili
+## Tipografi
 
-- `.atelier-card` — yuvarlak köşeli (16px), hafif gölge, sol kenar vurgusu yok
-- `.atelier-btn` — pill şekilli CTA
-- `.station-pill-*` — istasyon durum rozetleri
+- **Display**: Fraunces (serif) — başlıklar, marka adı
+- **Body**: Source Sans 3 — UI metin, formlar
+
+## Spacing Scale
+
+4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px
+
+## Border Radius
+
+- sm: 8px
+- default: 12px
+- lg: 16px (kartlar)
+- full: pill nav öğeleri yerine rounded-lg
 
 ## Navigasyon
 
-Üst sabit yatay sekme çubuğu (sol sidebar kullanılmaz). Mobilde ikon + kaydırılabilir sekmeler.
+Üst yatay kaydırılabilir tab navigasyonu — sol ikon rayı veya sidebar kullanılmaz.
 
-## Erişilebilirlik
+## Bileşen Dili
 
-WCAG AA kontrast, klavye navigasyonu, aria-label'lar, light/dark mod desteği.
+- Yumuşak gölgeler (`organic-shadow`)
+- Bitki temalı ikonlar (Leaf, Sprout, Droplets)
+- WCAG AA kontrast
+- Light/dark mode desteği

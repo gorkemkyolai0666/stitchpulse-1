@@ -1,4 +1,4 @@
-# StitchPulse — QA Raporu (QA_REPORT)
+# GrowPulse — QA Raporu (QA_REPORT)
 
 **Tarih:** 2026-06-17  
 **Durum:** MVP testleri geçti
