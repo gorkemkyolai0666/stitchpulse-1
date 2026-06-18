@@ -1,6 +1,6 @@
-# StitchPulse
+# GrowPulse
 
-Terzi ve tadilat atölyesi operasyon yönetimi B2B SaaS platformu.
+Bahçivan ve tadilat atölyesi operasyon yönetimi B2B SaaS platformu.
 
 ## Stack
 
@@ -20,7 +20,7 @@ cd frontend && npm install && npm run dev
 ## Demo
 
 ```
-E-posta: demo@heritagetailors.com
+E-posta: demo@evergreennursery.com
 Şifre: demo123456
 ```
 

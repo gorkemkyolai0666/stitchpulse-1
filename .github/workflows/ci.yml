@@ -17,11 +17,11 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_USER: stitchpulse
-          POSTGRES_PASSWORD: stitchpulse123
-          POSTGRES_DB: stitchpulse
+          POSTGRES_USER: growpulse
+          POSTGRES_PASSWORD: growpulse123
+          POSTGRES_DB: growpulse
         ports:
-          - 5457:5432
+          - 5458:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -48,7 +48,7 @@ jobs:
           npm run db:migrate
           npm run db:seed
         env:
-          DATABASE_URL: postgresql://stitchpulse:stitchpulse123@localhost:5457/stitchpulse?schema=public
+          DATABASE_URL: postgresql://growpulse:growpulse123@localhost:5458/growpulse?schema=public
 
       - name: Run unit tests
         run: npm test
@@ -58,9 +58,9 @@ jobs:
 
       - name: Start API and run integration tests
         env:
-          DATABASE_URL: postgresql://stitchpulse:stitchpulse123@localhost:5457/stitchpulse?schema=public
-          JWT_SECRET: stitchpulse-ci-secret
-          PORT: 4017
+          DATABASE_URL: postgresql://growpulse:growpulse123@localhost:5458/growpulse?schema=public
+          JWT_SECRET: growpulse-ci-secret
+          PORT: 4018
         run: |
           npm run start:prod &
           sleep 5
@@ -87,4 +87,31 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: http://localhost:4017/api
+          NEXT_PUBLIC_API_URL: http://localhost:4018/api
+
+  provision:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Verify deployment secrets
+        run: |
+          test -n "${{ secrets.GH_PAT }}" && echo "GH_PAT=true" || echo "GH_PAT=false"
+          test -n "${{ secrets.RAILWAY_API_TOKEN }}" && echo "RAILWAY_API_TOKEN=true" || echo "RAILWAY_API_TOKEN=false"
+          test -n "${{ secrets.VERCEL_TOKEN }}" && echo "VERCEL_TOKEN=true" || echo "VERCEL_TOKEN=false"
+
+      - name: Provision infrastructure
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npm run provision
