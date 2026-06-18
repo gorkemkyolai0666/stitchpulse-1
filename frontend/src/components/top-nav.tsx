@@ -4,16 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
-  Scissors,
-  ClipboardList,
+  Sprout,
+  PackageSearch,
   Wrench,
-  CheckSquare,
-  Package,
+  Droplets,
+  ShoppingBasket,
   Tags,
   Settings,
   Sun,
   Moon,
   LogOut,
+  Leaf,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
@@ -22,30 +23,30 @@ import { Button } from '@/components/ui/button';
 
 const navItems = [
   { href: '/dashboard', label: 'Panel', icon: LayoutDashboard },
-  { href: '/workstations', label: 'İstasyonlar', icon: Scissors },
-  { href: '/alteration-jobs', label: 'Tadilatlar', icon: ClipboardList },
-  { href: '/equipment-maintenance', label: 'Ekipman', icon: Wrench },
-  { href: '/quality-checklists', label: 'Kalite', icon: CheckSquare },
-  { href: '/fabric-orders', label: 'Kumaş', icon: Package },
-  { href: '/service-rates', label: 'Tarifeler', icon: Tags },
+  { href: '/greenhouse-bays', label: 'Seralar', icon: Sprout },
+  { href: '/harvest-batches', label: 'Hasatlar', icon: PackageSearch },
+  { href: '/equipment-repairs', label: 'Ekipman', icon: Wrench },
+  { href: '/irrigation-schedules', label: 'Sulama', icon: Droplets },
+  { href: '/plant-orders', label: 'Siparişler', icon: ShoppingBasket },
+  { href: '/plant-pricing', label: 'Fiyatlar', icon: Tags },
   { href: '/settings', label: 'Ayarlar', icon: Settings },
 ];
 
 export function TopNav() {
   const pathname = usePathname();
-  const { tailoringShop, user, logout } = useAuth();
+  const { nursery, user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 lg:px-8">
-        <Link href="/dashboard" className="flex shrink-0 items-center gap-2" aria-label="StitchPulse ana sayfa">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-foreground">
-            <Scissors className="h-4 w-4" strokeWidth={2} />
+        <Link href="/dashboard" className="flex shrink-0 items-center gap-2" aria-label="GrowPulse ana sayfa">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-leaf-soft text-leaf">
+            <Leaf className="h-4 w-4" strokeWidth={2.25} />
           </div>
           <div className="hidden sm:block">
-            <p className="font-display text-lg leading-none text-primary">StitchPulse</p>
-            <p className="truncate text-[11px] text-muted-foreground">{tailoringShop?.name || 'Atölye'}</p>
+            <p className="font-display text-lg leading-none text-primary">GrowPulse</p>
+            <p className="truncate text-[11px] text-muted-foreground">{nursery?.name || 'Fidanlık'}</p>
           </div>
         </Link>
 
@@ -61,9 +62,9 @@ export function TopNav() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition-colors',
+                  'flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-colors',
                   active
-                    ? 'bg-accent text-accent-foreground shadow-sm'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
                 aria-current={active ? 'page' : undefined}
@@ -85,7 +86,7 @@ export function TopNav() {
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            className="h-9 w-9 rounded-full"
+            className="h-9 w-9 rounded-lg"
             aria-label="Tema değiştir"
           >
             {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
@@ -94,7 +95,7 @@ export function TopNav() {
             variant="ghost"
             size="icon"
             onClick={logout}
-            className="h-9 w-9 rounded-full text-muted-foreground hover:text-destructive"
+            className="h-9 w-9 rounded-lg text-muted-foreground hover:text-destructive"
             aria-label="Çıkış yap"
           >
             <LogOut className="h-4 w-4" />

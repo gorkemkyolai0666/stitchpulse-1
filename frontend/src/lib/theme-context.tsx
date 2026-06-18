@@ -15,7 +15,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
-    const saved = localStorage.getItem('stitchpulse_theme') as Theme | null;
+    const saved = localStorage.getItem('growpulse_theme') as Theme | null;
     const initial = saved || 'light';
     setTheme(initial);
     document.documentElement.classList.toggle('dark', initial === 'dark');
@@ -24,7 +24,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = () => {
     const next = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
-    localStorage.setItem('stitchpulse_theme', next);
+    localStorage.setItem('growpulse_theme', next);
     document.documentElement.classList.toggle('dark', next === 'dark');
   };
 

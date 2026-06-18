@@ -6,8 +6,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-playfair)', 'Georgia', 'serif'],
+        sans: ['var(--font-source-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-fraunces)', 'Georgia', 'serif'],
         mono: ['ui-monospace', 'monospace'],
       },
       colors: {
@@ -52,15 +52,15 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        void: 'hsl(var(--void))',
-        candle: 'hsl(var(--candle))',
+        leaf: 'hsl(var(--leaf))',
+        moss: 'hsl(var(--moss))',
+        bloom: 'hsl(var(--bloom))',
         fog: 'hsl(var(--fog))',
-        crimson: 'hsl(var(--crimson))',
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 4px)',
-        sm: 'calc(var(--radius) - 8px)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
     },
   },

@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4017/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4018/api';
 
 interface RequestOptions {
   method?: string;
@@ -45,7 +45,7 @@ export const api = {
       password: string;
       firstName: string;
       lastName: string;
-      tailoringShopName: string;
+      nurseryName: string;
       phone?: string;
       city?: string;
       state?: string;
@@ -61,108 +61,108 @@ export const api = {
     stats: (token: string) => request('/dashboard/stats', { token }),
   },
 
-  workstations: {
+  greenhouseBays: {
     list: (token: string, params?: { page?: number; status?: string; zone?: string }) => {
       const query = new URLSearchParams();
       if (params?.page) query.set('page', String(params.page));
       if (params?.status) query.set('status', params.status);
       if (params?.zone) query.set('zone', params.zone);
       const qs = query.toString();
-      return request(`/workstations${qs ? `?${qs}` : ''}`, { token });
+      return request(`/greenhouse-bays${qs ? `?${qs}` : ''}`, { token });
     },
     create: (token: string, data: Record<string, unknown>) =>
-      request('/workstations', { method: 'POST', body: data, token }),
+      request('/greenhouse-bays', { method: 'POST', body: data, token }),
     update: (token: string, id: string, data: Record<string, unknown>) =>
-      request(`/workstations/${id}`, { method: 'PATCH', body: data, token }),
+      request(`/greenhouse-bays/${id}`, { method: 'PATCH', body: data, token }),
     delete: (token: string, id: string) =>
-      request(`/workstations/${id}`, { method: 'DELETE', token }),
+      request(`/greenhouse-bays/${id}`, { method: 'DELETE', token }),
   },
 
-  alterationJobs: {
+  harvestBatches: {
     list: (token: string, params?: { page?: number; status?: string }) => {
       const query = new URLSearchParams();
       if (params?.page) query.set('page', String(params.page));
       if (params?.status) query.set('status', params.status);
       const qs = query.toString();
-      return request(`/alteration-jobs${qs ? `?${qs}` : ''}`, { token });
+      return request(`/harvest-batches${qs ? `?${qs}` : ''}`, { token });
     },
     create: (token: string, data: Record<string, unknown>) =>
-      request('/alteration-jobs', { method: 'POST', body: data, token }),
+      request('/harvest-batches', { method: 'POST', body: data, token }),
     update: (token: string, id: string, data: Record<string, unknown>) =>
-      request(`/alteration-jobs/${id}`, { method: 'PATCH', body: data, token }),
+      request(`/harvest-batches/${id}`, { method: 'PATCH', body: data, token }),
     delete: (token: string, id: string) =>
-      request(`/alteration-jobs/${id}`, { method: 'DELETE', token }),
+      request(`/harvest-batches/${id}`, { method: 'DELETE', token }),
   },
 
-  equipmentMaintenance: {
+  equipmentRepairs: {
     list: (token: string, params?: { status?: string; priority?: string }) => {
       const query = new URLSearchParams();
       if (params?.status) query.set('status', params.status);
       if (params?.priority) query.set('priority', params.priority);
       const qs = query.toString();
-      return request(`/equipment-maintenance${qs ? `?${qs}` : ''}`, { token });
+      return request(`/equipment-repairs${qs ? `?${qs}` : ''}`, { token });
     },
     create: (token: string, data: Record<string, unknown>) =>
-      request('/equipment-maintenance', { method: 'POST', body: data, token }),
+      request('/equipment-repairs', { method: 'POST', body: data, token }),
     update: (token: string, id: string, data: Record<string, unknown>) =>
-      request(`/equipment-maintenance/${id}`, { method: 'PATCH', body: data, token }),
+      request(`/equipment-repairs/${id}`, { method: 'PATCH', body: data, token }),
     delete: (token: string, id: string) =>
-      request(`/equipment-maintenance/${id}`, { method: 'DELETE', token }),
+      request(`/equipment-repairs/${id}`, { method: 'DELETE', token }),
   },
 
-  qualityChecklist: {
+  irrigationSchedules: {
     list: (token: string, params?: { page?: number; status?: string }) => {
       const query = new URLSearchParams();
       if (params?.page) query.set('page', String(params.page));
       if (params?.status) query.set('status', params.status);
       const qs = query.toString();
-      return request(`/quality-checklists${qs ? `?${qs}` : ''}`, { token });
+      return request(`/irrigation-schedules${qs ? `?${qs}` : ''}`, { token });
     },
     create: (token: string, data: Record<string, unknown>) =>
-      request('/quality-checklists', { method: 'POST', body: data, token }),
+      request('/irrigation-schedules', { method: 'POST', body: data, token }),
     update: (token: string, id: string, data: Record<string, unknown>) =>
-      request(`/quality-checklists/${id}`, { method: 'PATCH', body: data, token }),
+      request(`/irrigation-schedules/${id}`, { method: 'PATCH', body: data, token }),
     delete: (token: string, id: string) =>
-      request(`/quality-checklists/${id}`, { method: 'DELETE', token }),
+      request(`/irrigation-schedules/${id}`, { method: 'DELETE', token }),
   },
 
-  fabricOrders: {
-    list: (token: string, params?: { page?: number; status?: string; fabricType?: string }) => {
+  plantOrders: {
+    list: (token: string, params?: { page?: number; status?: string; plantVariety?: string }) => {
       const query = new URLSearchParams();
       if (params?.page) query.set('page', String(params.page));
       if (params?.status) query.set('status', params.status);
-      if (params?.fabricType) query.set('fabricType', params.fabricType);
+      if (params?.plantVariety) query.set('plantVariety', params.plantVariety);
       const qs = query.toString();
-      return request(`/fabric-orders${qs ? `?${qs}` : ''}`, { token });
+      return request(`/plant-orders${qs ? `?${qs}` : ''}`, { token });
     },
     create: (token: string, data: Record<string, unknown>) =>
-      request('/fabric-orders', { method: 'POST', body: data, token }),
+      request('/plant-orders', { method: 'POST', body: data, token }),
     update: (token: string, id: string, data: Record<string, unknown>) =>
-      request(`/fabric-orders/${id}`, { method: 'PATCH', body: data, token }),
+      request(`/plant-orders/${id}`, { method: 'PATCH', body: data, token }),
     delete: (token: string, id: string) =>
-      request(`/fabric-orders/${id}`, { method: 'DELETE', token }),
+      request(`/plant-orders/${id}`, { method: 'DELETE', token }),
   },
 
-  serviceRates: {
+  plantPricing: {
     list: (token: string, params?: { page?: number; status?: string }) => {
       const query = new URLSearchParams();
       if (params?.page) query.set('page', String(params.page));
       if (params?.status) query.set('status', params.status);
       const qs = query.toString();
-      return request(`/service-rates${qs ? `?${qs}` : ''}`, { token });
+      return request(`/plant-pricing${qs ? `?${qs}` : ''}`, { token });
     },
     create: (token: string, data: Record<string, unknown>) =>
-      request('/service-rates', { method: 'POST', body: data, token }),
+      request('/plant-pricing', { method: 'POST', body: data, token }),
     update: (token: string, id: string, data: Record<string, unknown>) =>
-      request(`/service-rates/${id}`, { method: 'PATCH', body: data, token }),
+      request(`/plant-pricing/${id}`, { method: 'PATCH', body: data, token }),
     delete: (token: string, id: string) =>
-      request(`/service-rates/${id}`, { method: 'DELETE', token }),
+      request(`/plant-pricing/${id}`, { method: 'DELETE', token }),
   },
 
-  tailoringShop: {
-    get: (token: string) => request('/tailoring-shop', { token }),
+  nursery: {
+    get: (token: string) => request('/nursery', { token }),
     update: (token: string, data: Record<string, unknown>) =>
-      request('/tailoring-shop', { method: 'PATCH', body: data, token }),
+      request('/nursery', { method: 'PATCH', body: data, token }),
   },
 };
 

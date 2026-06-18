@@ -43,7 +43,7 @@ const WORKSTATION_STATUS: Record<string, string> = {
   closed: 'Kapalı',
 };
 
-export function formatWorkstationStatus(status: string): string {
+export function formatBayStatus(status: string): string {
   return WORKSTATION_STATUS[status] || status;
 }
 
@@ -53,11 +53,11 @@ const WORKSTATION_SPECIALTY: Record<string, string> = {
   casual: 'Gündelik',
   leather: 'Deri',
   denim: 'Denim',
-  specialty: 'Özel İş',
+  climateType: 'Özel İş',
 };
 
-export function formatWorkstationSpecialty(specialty: string): string {
-  return WORKSTATION_SPECIALTY[specialty] || specialty;
+export function formatBayClimateType(climateType: string): string {
+  return WORKSTATION_SPECIALTY[climateType] || climateType;
 }
 
 const JOB_STATUS: Record<string, string> = {
@@ -66,7 +66,7 @@ const JOB_STATUS: Record<string, string> = {
   disputed: 'İtirazlı',
 };
 
-export function formatJobStatus(status: string): string {
+export function formatHarvestStatus(status: string): string {
   return JOB_STATUS[status] || status;
 }
 
@@ -79,7 +79,7 @@ const JOB_TYPE: Record<string, string> = {
   rush: 'Acil İş',
 };
 
-export function formatJobType(type: string): string {
+export function formatHarvestType(type: string): string {
   return JOB_TYPE[type] || type;
 }
 
@@ -90,7 +90,7 @@ const EQUIPMENT_STATUS: Record<string, string> = {
   cancelled: 'İptal',
 };
 
-export function formatEquipmentMaintenanceStatus(status: string): string {
+export function formatEquipmentRepairStatus(status: string): string {
   return EQUIPMENT_STATUS[status] || status;
 }
 
@@ -101,7 +101,7 @@ const EQUIPMENT_PRIORITY: Record<string, string> = {
   urgent: 'Acil',
 };
 
-export function formatEquipmentMaintenancePriority(priority: string): string {
+export function formatEquipmentRepairPriority(priority: string): string {
   return EQUIPMENT_PRIORITY[priority] || priority;
 }
 
@@ -112,7 +112,7 @@ const CHECKLIST_STATUS: Record<string, string> = {
   overdue: 'Gecikmiş',
 };
 
-export function formatQualityChecklistStatus(status: string): string {
+export function formatIrrigationScheduleStatus(status: string): string {
   return CHECKLIST_STATUS[status] || status;
 }
 
@@ -125,7 +125,7 @@ const CHECKLIST_CATEGORY: Record<string, string> = {
   other: 'Diğer',
 };
 
-export function formatQualityChecklistCategory(category: string): string {
+export function formatIrrigationScheduleCategory(category: string): string {
   return CHECKLIST_CATEGORY[category] || category;
 }
 
@@ -136,7 +136,7 @@ const FABRIC_ORDER_STATUS: Record<string, string> = {
   delivered: 'Teslim Edildi',
 };
 
-export function formatFabricOrderStatus(status: string): string {
+export function formatPlantOrderStatus(status: string): string {
   return FABRIC_ORDER_STATUS[status] || status;
 }
 
@@ -146,12 +146,12 @@ const SERVICE_RATE_STATUS: Record<string, string> = {
   archived: 'Arşiv',
 };
 
-export function formatServiceRateStatus(status: string): string {
+export function formatPlantPricingStatus(status: string): string {
   return SERVICE_RATE_STATUS[status] || status;
 }
 
 const SERVICE_CATEGORY: Record<string, string> = {
-  basic_alteration: 'Temel Tadilat',
+  basic_alteration: 'Temel Hasat',
   bridal_package: 'Gelinlik Paketi',
   rush_service: 'Acil Hizmet',
   leather_work: 'Deri İşi',
@@ -159,7 +159,7 @@ const SERVICE_CATEGORY: Record<string, string> = {
   other: 'Diğer',
 };
 
-export function formatServiceCategory(category: string): string {
+export function formatPlantCategory(category: string): string {
   return SERVICE_CATEGORY[category] || category;
 }
 

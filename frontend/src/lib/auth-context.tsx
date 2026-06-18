@@ -11,14 +11,14 @@ interface User {
   role: string;
 }
 
-interface TailoringShop {
+interface Nursery {
   id: string;
   name: string;
 }
 
 interface AuthState {
   user: User | null;
-  tailoringShop: TailoringShop | null;
+  nursery: Nursery | null;
   token: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -27,7 +27,7 @@ interface AuthState {
     password: string;
     firstName: string;
     lastName: string;
-    tailoringShopName: string;
+    nurseryName: string;
     phone?: string;
     city?: string;
     state?: string;
@@ -37,11 +37,11 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null);
 
-const TOKEN_KEY = 'stitchpulse_token';
+const TOKEN_KEY = 'growpulse_token';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [tailoringShop, setTailoringShop] = useState<TailoringShop | null>(null);
+  const [nursery, setNursery] = useState<Nursery | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,9 +51,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       api.auth
         .me(saved)
         .then((data) => {
-          const result = data as { user: User; tailoringShop: TailoringShop };
+          const result = data as { user: User; nursery: Nursery };
           setUser(result.user);
-          setTailoringShop(result.tailoringShop);
+          setNursery(result.nursery);
           setToken(saved);
         })
         .catch(() => {
@@ -69,12 +69,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const data = (await api.auth.login({ email, password })) as {
       accessToken: string;
       user: User;
-      tailoringShop: TailoringShop;
+      nursery: Nursery;
     };
     localStorage.setItem(TOKEN_KEY, data.accessToken);
     setToken(data.accessToken);
     setUser(data.user);
-    setTailoringShop(data.tailoringShop);
+    setNursery(data.nursery);
   }, []);
 
   const register = useCallback(
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password: string;
       firstName: string;
       lastName: string;
-      tailoringShopName: string;
+      nurseryName: string;
       phone?: string;
       city?: string;
       state?: string;
@@ -91,12 +91,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = (await api.auth.register(registerData)) as {
         accessToken: string;
         user: User;
-        tailoringShop: TailoringShop;
+        nursery: Nursery;
       };
       localStorage.setItem(TOKEN_KEY, data.accessToken);
       setToken(data.accessToken);
       setUser(data.user);
-      setTailoringShop(data.tailoringShop);
+      setNursery(data.nursery);
     },
     [],
   );
@@ -105,11 +105,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(TOKEN_KEY);
     setToken(null);
     setUser(null);
-    setTailoringShop(null);
+    setNursery(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, tailoringShop, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, nursery, token, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
